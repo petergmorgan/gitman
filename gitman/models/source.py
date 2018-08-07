@@ -92,11 +92,11 @@ class Source(AttributeDictionary):
         log.info("Creating a symbolic link...")
 
         if os.name == 'nt':
-            warnings.warn("Symbolic links are not supported on Windows")
-            return
-
-        target = os.path.join(root, self.link)
-        source = os.path.relpath(os.getcwd(), os.path.dirname(target))
+            target = os.path.normpath(os.path.join(root, self.link))
+            source = os.getcwd()
+        else:
+            target = os.path.join(root, self.link)
+            source = os.path.relpath(os.getcwd(), os.path.dirname(target))
 
         if os.path.islink(target):
             os.remove(target)
